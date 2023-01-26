@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 #define DEBUG_STACK_SIZE 20
-#define DEBUG_FLUSH_FILE "sl_debug.log"
+#define DEBUG_FLUSH_FILE "debug.log"
 
 /* defining a circular stack which holds error messages
    required for debugging
