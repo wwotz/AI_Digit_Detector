@@ -3,6 +3,7 @@
 
 #include "shaders.h"
 #include "debug.h"
+#include "linear.h"
 
 /* structure containing:
    - (v)ertex (b)uffer (o)bject,

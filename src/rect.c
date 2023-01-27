@@ -50,6 +50,14 @@ int init_rect(rect_t *rec, GLfloat x, GLfloat y, GLuint w, GLuint h,
 void render_rect(rect_t *rec)
 {
         if (rec != NULL) {
+                identity_matrix(model);
+                scale_matrix3f(model, rec->w, rec->h, 1.0);
+                translate_matrix3f(model, rec->x, rec->y, 0.0);
+
+                glUniformMatrix4fv(glGetUniformLocation(rec->program, "model"), 1, GL_FALSE, model);
+                glUniformMatrix4fv(glGetUniformLocation(rec->program, "projection"), 1, GL_FALSE, projection);
+                //glUniformMatrix4fv(glGetUniformLocation(rec->program, "view"), 1, GL_FALSE, view);
+
                 glUseProgram(rec->program);
                 glBindVertexArray(rec->vao);
                 glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -7,6 +7,7 @@
 
 #include "../include/window.h"
 #include "../include/rect.h"
+#include "../include/linear.h"
 
 #define WINDOW_NAME "MNIST Digit Detector"
 #define WINDOW_WIDTH 1200
@@ -25,6 +26,9 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
         }
 
+        identity_matrix(model);
+        orthographic_matrix(projection, 0.0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0, 10.0, -10.0);
+
         shader_info_t shader_info[3] = {
                 { GL_VERTEX_SHADER, "../shaders/whiteboard.glvs" },
                 { GL_FRAGMENT_SHADER, "../shaders/whiteboard.glfs" },
@@ -32,7 +36,7 @@ int main(int argc, char **argv)
         };
 
         rect_t rec;
-        init_rect(&rec, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, shader_info);
+        init_rect(&rec, 0, 0, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, shader_info);
 
         if (had_error_debug()) {
                 fprintf(stderr, "ERROR: %s\n", pop_error_debug());
