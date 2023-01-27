@@ -4,6 +4,10 @@
 //requires -lm flag to link the math library
 #include <math.h>
 
+extern float model[16];
+extern float projection[16];
+extern float view[16];
+
 typedef struct vec2_t {
         float x, y;
 } vec2_t;

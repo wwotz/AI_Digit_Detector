@@ -1,5 +1,15 @@
 #include "../include/linear.h"
 
+/* model matrix used to transform models to model space */
+float model[16];
+
+/* projection matrix used to transform models to orthogrpahic
+   or perspective space */
+float projection[16];
+
+/* view matrix used to simulate an eye or camera */
+float view[16];
+
 /* returns a 2-dimensional vector with (x, y) as it's components */
 inline vec2_t create_vec2_t(float x, float y)
 {
