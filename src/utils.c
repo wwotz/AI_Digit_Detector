@@ -29,7 +29,7 @@ char *load_file(const char *restrict name)
         buffer_len = ftell(fd);
         fseek(fd, 0, SEEK_SET);
 
-        if (!(buffer = malloc(sizeof(*buffer) * buffer_len))) {
+        if (!(buffer = malloc(sizeof(*buffer) * (buffer_len + 1)))) {
                 fprintf(stderr, "Fatal: ran out of memory!\n");
                 exit(EXIT_FAILURE);
         }
@@ -38,6 +38,7 @@ char *load_file(const char *restrict name)
         while ((nread = fread(buffer, sizeof(*buffer), buffer_len, fd)) != 0)
                 ;
 
+        buffer[buffer_len] = '\0';
         if (ferror(fd)) {
                 const char *msg = "Failed to read file: ";
                 char *err = malloc(strlen(msg) + strlen(name) + 1);
