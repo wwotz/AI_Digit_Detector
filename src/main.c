@@ -15,6 +15,15 @@
 #define WINDOW_X SDL_WINDOWPOS_UNDEFINED
 #define WINDOW_Y SDL_WINDOWPOS_UNDEFINED
 
+#define NO_SHADER { GL_NONE, NULL }
+
+#define WHITEBOARD_W (480)
+#define WHITEBOARD_H (480)
+#define WHITEBOARD_X (WINDOW_WIDTH-WHITEBOARD_W-50)
+#define WHITEBOARD_Y ((WINDOW_HEIGHT-WHITEBOARD_H)/2)
+#define WHITEBOARD_GLVS { GL_VERTEX_SHADER, "../shaders/whiteboard.glvs" }
+#define WHITEBOARD_GLFS { GL_FRAGMENT_SHADER, "../shaders/whiteboard.glfs" }
+
 int running;
 
 int main(int argc, char **argv)
@@ -30,13 +39,13 @@ int main(int argc, char **argv)
         orthographic_matrix(projection, 0.0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0, 10.0, -10.0);
 
         shader_info_t shader_info[3] = {
-                { GL_VERTEX_SHADER, "../shaders/whiteboard.glvs" },
-                { GL_FRAGMENT_SHADER, "../shaders/whiteboard.glfs" },
-                { GL_NONE, NULL },
+                WHITEBOARD_GLVS,
+                WHITEBOARD_GLFS,
+                NO_SHADER
         };
 
         rect_t rec;
-        init_rect(&rec, 0, 0, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, shader_info);
+        init_rect(&rec, WHITEBOARD_X, WHITEBOARD_Y, WHITEBOARD_W, WHITEBOARD_H, shader_info);
 
         if (had_error_debug()) {
                 fprintf(stderr, "ERROR: %s\n", pop_error_debug());
