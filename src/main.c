@@ -8,6 +8,7 @@
 #include "../include/window.h"
 #include "../include/rect.h"
 #include "../include/linear.h"
+#include "../include/mnist_format.h"
 
 #define WINDOW_NAME "MNIST Digit Detector"
 #define WINDOW_WIDTH 1200
@@ -51,6 +52,7 @@ int main(int argc, char **argv)
                 NO_SHADER
         };
 
+
         rect_t whiteboard;
         init_rect(&whiteboard, WHITEBOARD_X, WHITEBOARD_Y, WHITEBOARD_W, WHITEBOARD_H, whiteboard_sinfo);
 
@@ -67,6 +69,14 @@ int main(int argc, char **argv)
 
         rect_t aiboard;
         init_rect(&aiboard, AIBOARD_X, AIBOARD_Y, AIBOARD_W, AIBOARD_H, aiboard_sinfo);
+
+        if (had_error_debug()) {
+                fprintf(stderr, "ERROR: %s\n", pop_error_debug());
+                exit(EXIT_FAILURE);
+        }
+
+        mnist_header_t header;
+        header = read_header_mnist("../train-images-idx3-ubyte/train-images.idx3-ubyte");
 
         if (had_error_debug()) {
                 fprintf(stderr, "ERROR: %s\n", pop_error_debug());

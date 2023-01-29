@@ -1,11 +1,16 @@
 #ifndef MNIST_FORMAT_H_
 #define MNIST_FORMAT_H_
 
+#include "debug.h"
+#include <stdio.h>
+
 typedef struct mnist_header_t {
-        uint32_t magic;
-        uint32_t image_count;
-        uint32_t row_count;
-        uint32_t col_count;
+        unsigned int magic;
+        unsigned int image_count;
+        unsigned int row_count;
+        unsigned int col_count;
 } mnist_header_t;
+
+mnist_header_t read_header_mnist(const char *file);
 
 #endif // MNIST_FORMAT_H_
