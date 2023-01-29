@@ -21,11 +21,11 @@ mnist_header_t read_header_mnist(const char *file)
                 return header;
         }
 
-        //convert from little endian to big endian
-        header.magic = htonl(buffer[0]);
-        header.image_count = htonl(buffer[1]);
-        header.row_count = htonl(buffer[2]);
-        header.col_count = htonl(buffer[3]);
+        //converts to correct endianess of the system
+        header.magic = ntohl(buffer[0]);
+        header.image_count = ntohl(buffer[1]);
+        header.row_count = ntohl(buffer[2]);
+        header.col_count = ntohl(buffer[3]);
 
         #undef MNIST_HEADER_BUFFER_SIZE
         return header;

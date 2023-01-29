@@ -83,6 +83,10 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
         }
 
+        printf("magic: %d\n", header.magic);
+        printf("image count: %d\n", header.image_count);
+
+
         running = 1;
         SDL_Event event;
         while (running) {
