@@ -75,17 +75,36 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
         }
 
-        mnist_header_t header;
-        header = read_header_mnist("../train-images-idx3-ubyte/train-images.idx3-ubyte");
+        mnist_file_t mnist_file;
+        mnist_file = open_file_mnist("../train-images-idx3-ubyte/train-images.idx3-ubyte");
 
         if (had_error_debug()) {
                 fprintf(stderr, "ERROR: %s\n", pop_error_debug());
                 exit(EXIT_FAILURE);
         }
 
-        printf("magic: %d\n", header.magic);
-        printf("image count: %d\n", header.image_count);
+        GLuint texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
 
+        char *buffer = NULL;
+        buffer = get_next_image_mnist(mnist_file, buffer, 0);
+        buffer = get_next_image_mnist(mnist_file, buffer, 0);
+        buffer = get_next_image_mnist(mnist_file, buffer, 0);
+        //buffer = get_next_image_mnist(mnist_file, buffer, 0);
+
+        unsigned int *pixels = malloc(28 * 28 * sizeof(*pixels));
+        for (int i = 0; i < 28 * 28; i++) {
+                char *bytes = (char *)(pixels+i);
+                bytes[0] = buffer[i];
+                bytes[1] = buffer[i];
+                bytes[2] = buffer[i];
+                bytes[3] = 0xff;
+        }
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 28, 28, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
         running = 1;
         SDL_Event event;
@@ -94,9 +113,28 @@ int main(int argc, char **argv)
                         if (event.type == SDL_QUIT) {
                                 running = 0;
                                 break;
+                        } else if (event.key.keysym.sym == SDLK_f) {
+                                glBindTexture(GL_TEXTURE_2D, texture);
+                                buffer = get_next_image_mnist(mnist_file, buffer, 0);
+                                if (buffer == NULL || had_error_debug()) {
+                                        printf("ERROR: %s\n", pop_error_debug());
+                                        break;
+                                }
+                                unsigned int *pixels = malloc(28 * 28 * sizeof(*pixels));
+                                for (int i = 0; i < 28 * 28; i++) {
+                                        char *bytes = (char *)(pixels+i);
+                                        bytes[0] = buffer[i];
+                                        bytes[1] = buffer[i];
+                                        bytes[2] = buffer[i];
+                                        bytes[3] = 0xff;
+                                }
+                                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 28, 28, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
                         }
                 }
                 clear_buffers_window(GL_COLOR);
+                glBindTexture(GL_TEXTURE_2D, texture);
                 render_rect(&whiteboard);
                 render_rect(&aiboard);
                 swap_window();
@@ -105,6 +143,6 @@ int main(int argc, char **argv)
         free_rect(&whiteboard);
         free_rect(&aiboard);
         flush_debug();
-        free_window();
+        free_window();-
         return 0;
 }
