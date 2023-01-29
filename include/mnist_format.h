@@ -11,6 +11,12 @@ typedef struct mnist_header_t {
         unsigned int col_count;
 } mnist_header_t;
 
-mnist_header_t read_header_mnist(const char *file);
+typedef struct mnist_file_t {
+        FILE *fd;
+        mnist_header_t header;
+} mnist_file_t;
+
+mnist_file_t open_file_mnist(const char *file);
+char *get_next_image_mnist(mnist_file_t mnist_file, char *buffer, size_t size);
 
 #endif // MNIST_FORMAT_H_
