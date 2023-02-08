@@ -89,9 +89,6 @@ int main(int argc, char **argv)
 
         char *buffer = NULL;
         buffer = get_next_image_mnist(mnist_file, buffer, 0);
-        buffer = get_next_image_mnist(mnist_file, buffer, 0);
-        buffer = get_next_image_mnist(mnist_file, buffer, 0);
-        //buffer = get_next_image_mnist(mnist_file, buffer, 0);
 
         unsigned int *pixels = malloc(28 * 28 * sizeof(*pixels));
         for (int i = 0; i < 28 * 28; i++) {
@@ -136,6 +133,7 @@ int main(int argc, char **argv)
                 clear_buffers_window(GL_COLOR);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 render_rect(&whiteboard);
+                glBindTexture(GL_TEXTURE_2D, texture);
                 render_rect(&aiboard);
                 swap_window();
         }
@@ -143,6 +141,6 @@ int main(int argc, char **argv)
         free_rect(&whiteboard);
         free_rect(&aiboard);
         flush_debug();
-        free_window();-
+        free_window();
         return 0;
 }
