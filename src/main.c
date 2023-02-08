@@ -133,7 +133,7 @@ int main(int argc, char **argv)
                 clear_buffers_window(GL_COLOR);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 render_rect(&whiteboard);
-                glBindTexture(GL_TEXTURE_2D, texture);
+                glBindTexture(GL_TEXTURE_2D, 0);
                 render_rect(&aiboard);
                 swap_window();
         }
