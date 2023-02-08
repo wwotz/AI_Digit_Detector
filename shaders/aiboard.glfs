@@ -1,0 +1,9 @@
+#version 330 core
+
+uniform sampler2D texture_unit;
+in vec2 texture_vertex;
+
+void main()
+{
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * texture2D(texture_unit, texture_vertex);
+}
